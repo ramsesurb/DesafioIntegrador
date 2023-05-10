@@ -16,21 +16,21 @@ export default function configureWebSocketServer(app) {
     socket.on("nuevoProducto", async (producto) => {
       await productos.addProduct(producto);
 
-      socketServerIO.emit("actualizarTabla",  productos.getProducts());
+      socketServerIO.emit("actualizarTabla", await productos.getProducts());
     });
     socket.on("quitarProducto", async ({ id }) => {
       await productos.deleteById(id);
       console.log(id);
 
-      socketServerIO.emit("actualizarTabla",  productos.getProducts());
+      socketServerIO.emit("actualizarTabla", await productos.getProducts());
     });
     socket.on("nuevoChat", async (mensaje) => {
       await chat.addMenssage(mensaje);
       console.log(mensaje);
-
+  
       socketServerIO.emit("actualizarChat",chat.getChat());
     });
   });
-
+ 
   return { server, socketServerIO };
 }

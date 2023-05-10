@@ -9,13 +9,10 @@ const cartSchema = new mongoose.Schema({
   },
   productos: {
     type: Array,
-    default:[{
-        id: Number,
-        cantidad: Number
-      }],
+    default:[],
     required: true,
   }
-},{ collection: "chat" });
+},{ collection: "Cart" });
   
 const cartModel = mongoose.model(Collection, cartSchema);
  

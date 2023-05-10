@@ -1,6 +1,5 @@
 [
   {
-    "_id": "6456b3e431ef543c49e65d3b",
     "id": 5,
     "titulo": "Prs Multifoil",
     "descripcion": "Guitarra Electrica",
@@ -11,7 +10,6 @@
     "status": true
   },
   {
-    "_id": "6456b3e431ef543c49e65d3d",
     "id": 2,
     "titulo": "fender starcaster",
     "descripcion": "guitarra electrica",
