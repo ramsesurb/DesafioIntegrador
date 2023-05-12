@@ -3,6 +3,39 @@
         <h1 class="text-center text-light">Productos</h1>
     </div>
 </div>
+ <br>
+
+ <div class="row container ms-4 mt-4">
+    {{#if productos}}
+     {{#each productos}}
+
+<div id="prodDisplay" class="card col-sm-6 mb-3 mb-sm-0 m-4 ms-4" style="width: 18rem;">
+  <img src="{{ this.thumbnail }}" width="50" class="card-img-top" alt="...">
+  <div class="card-body">
+    <h5 class="card-title">{{ this.titulo }}</h5>
+    <h5 class="card-text" > ${{ this.precio }} </h5>
+    <p class="card-text">{{ this.descripcion }}</p>
+    <a href="#" class="btn btn-primary">Agregar al carrito</a>
+  </div>
+</div>
+ {{/each}}
+
+</div>
+{{else}}
+<div>
+    <br>
+        <h3> No hay ningún producto agregado. </h3>
+        {{/if}}
+         
+    {{#if hasPrevPage}}
+    <a href="/?page={{prevPage}}"><button>Anterior</button></a>
+    {{/if}}
+    {{#if hasNextPage}}
+    <a href="/?page={{nextPage}}"><button>Siguiente</button></a>
+    {{/if}}
+
+</div>
+        
 
 
 <div class="entry mt-4">
