@@ -10,11 +10,12 @@ staticProd.get("/", async (req, res) => {
   const {page = 1} = req.query;
   const limit = req.query.limit ? parseInt(req.query.limit) : undefined;
   const prodsRaw = await productos.getProducts(limit);
-  const prods = prodsRaw.map(item=>item.toObject())
-
-  const {docs, hasPrevPage, hasNextPage, nextPage, prevPage   } = await productoModel.paginate({},{limit:4, page, lean:true})
+  //const prods = prodsRaw.map(item=>item.toObject())
+  
+  const {docs, hasPrevPage, hasNextPage, nextPage, prevPage} = await productoModel.paginate({},{limit:6, page, lean:true})
+  const prods = docs
   res.render("home", { productos: prods },
-  hasPrevPage,
+        hasPrevPage,
         hasNextPage,
         prevPage,
         nextPage);
