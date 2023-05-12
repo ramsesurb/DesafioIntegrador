@@ -14,10 +14,10 @@ staticProd.get("/", async (req, res) => {
   
   const {docs, hasPrevPage, hasNextPage, nextPage, prevPage} = await productoModel.paginate({},{limit:6, page, lean:true})
   const prods = docs
-  res.render("home", { productos: prods },
+  res.render("home", { productos: prods ,
         hasPrevPage,
         hasNextPage,
         prevPage,
-        nextPage);
+        nextPage});
 });
 export default staticProd;
