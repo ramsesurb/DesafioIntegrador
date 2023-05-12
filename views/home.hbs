@@ -27,10 +27,10 @@
         <h3> No hay ningún producto agregado. </h3>
         {{/if}}
      {{#if hasPrevPage}}
-    <a href="/students?page={{prevPage}}"><button>Anterior</button></a>
+    <a href="/?page={{prevPage}}"><button>Anterior</button></a>
     {{/if}}
     {{#if hasNextPage}}
-    <a href="/students?page={{nextPage}}"><button>Siguiente</button></a>
+    <a href="/?page={{nextPage}}"><button>Siguiente</button></a>
     {{/if}}    
    <a href="/?page={{prevPage}}" class="btn btn-primary">Anterior</a>
    <a href="/?page={{nextPage}}" class="btn btn-primary">Siguiente</a>
