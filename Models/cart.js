@@ -8,9 +8,16 @@ const cartSchema = new mongoose.Schema({
     unique: true,
   },
   productos: {
-    type: Array,
-    default:[],
-    required: true,
+    type: [
+      {
+          producto: {
+              type: mongoose.Schema.Types.ObjectId,
+              ref:"products"
+          },
+          stock: Number
+      }
+  ],
+  default: []
   }
 },{ collection: "Cart" });
   
