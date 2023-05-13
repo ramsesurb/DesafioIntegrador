@@ -21,7 +21,7 @@ class CartManagerMongo {
       
       const newProduct = {
         id: (Math.floor(Math.random() * 1000) % 1000).toString().padStart(3, '0'),
-        productos: [],
+        productos: [{ "id": 4}],
       };
       const result = await cartModel.create(newProduct)
       console.log("producto nuevo", newProduct);
@@ -102,9 +102,56 @@ class CartManagerMongo {
     }
   }
 
-
+  async deleteProductById(cid, pid) {
+    try {
+      const cart = await cartModel.findOneAndUpdate(
+        { id: cid },
+        { $pull: { productos: { id: pid } } },
+        { new: true }
+      );
+      
+      return cart;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  async emptyCart(cid) {
+    try {
+      const cart = await cartModel.updateOne(
+        { id: cid },
+        { $set: { productos: [] } }
+      );
+      return cart;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  async updateCart(cid, products) {
+    try {
+      const cart = await cartModel.findOneAndUpdate(
+        { id: cid },
+        { productos: products },
+        { new: true }
+      );
+      return cart;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  async updateProductQuantity(cid, pid, quantity) {
+    try {
+      const cart = await cartModel.findOneAndUpdate(
+        { id: cid, "productos.id": pid },
+        { $set: { "productos.$.Quantity": quantity } },
+        { new: true }
+      );
+      return cart;
+    } catch (error) {
+      console.log(error);
+    }
+  }
 }
  
 export default CartManagerMongo;
 const rute = new CartManagerMongo();
-rute.deleteById()
+//rute.createCart()
