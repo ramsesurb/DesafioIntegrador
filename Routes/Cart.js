@@ -36,6 +36,15 @@ routerCart.post("/:cid/product/:pid", async (req, res) => {
   res.send(cart);
 });
 
+//nuevo put carrito
+
+routerCart.put("/:cid/product/:pid", async (req, res) => {
+  const cid = parseFloat(req.params.cid);
+  const pid = parseFloat(req.params.pid);
+  const product = req.body;
+  const cart = await productos.addProduct(cid, product, pid);
+  res.send(cart);
+});
 //delete by id
 routerCart.delete("/:id", async (req, res) => {
   const id = parseInt(req.params.id);

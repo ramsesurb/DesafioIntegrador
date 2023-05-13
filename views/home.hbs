@@ -26,53 +26,18 @@
     <br>
         <h3> No hay ningún producto agregado. </h3>
         {{/if}}
-<<<<<<< HEAD
+
      <div class=" row width  m-4 justify-content-center ">  
-=======
-     <div>  
->>>>>>> f46dedc685133cfb073031e8829e249d474cc122
+
+     
+
     {{#if hasPrevPage}}
     <a href="/?page={{prevPage}}" class=" col btn btn-primary">Anterior</a>
     {{/if}}
     {{#if hasNextPage}}
     <a href="/?page={{nextPage}}" class=" col btn btn-primary">Siguiente</a>
     {{/if}}
-    </div>  
+     
 </div>
         
 
-
-<<<<<<< HEAD
-=======
-<div class="entry mt-4">
-    {{#if productos}}
-    <div class="  p-1 border border-dark border-3 rounded">
-        <table class="  table table-resposive ">
-            <thead class="thead-dark text-light bg-primary">
-                <tr>
-                    <th scope="col">id</th>
-                    <th scope="col">Nombre</th>
-                    <th scope="col">Precio</th>
-                    <th scope="col">Stock</th>
-                    <th scope="col">Imagen</th>
-                </tr>
-            </thead>
-            <tbody id="prodDisplay">
-                {{#each productos}}
-                <tr class="table">
-                    <th>{{ this.id }}</th>
-                    <td>{{ this.titulo }}</td>
-                    <td>{{ this.precio }}</td>
-                    <td>{{ this.stock }}</td>
-                    <td><img src="{{ this.thumbnail }}" width="50"></td>
-                </tr>
-                {{/each}}
-            </tbody>
-        </table>
-        {{else}}
-        <br>
-        <h3> No hay ningún producto agregado. </h3>
-        {{/if}}
-    </div>
-</div>
->>>>>>> f46dedc685133cfb073031e8829e249d474cc122

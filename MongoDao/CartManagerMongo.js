@@ -1,6 +1,6 @@
 import cartModel from "../Models/cart.js";
 import { promises as fs } from "fs";
-class CartManager {
+class CartManagerMongo {
   async getProducts(limit) {
     try {
       const content = await cartModel.find(limit)
@@ -104,5 +104,7 @@ class CartManager {
 
 
 }
-
-export default CartManager;
+ 
+export default CartManagerMongo;
+const rute = new CartManagerMongo();
+rute.deleteById()
