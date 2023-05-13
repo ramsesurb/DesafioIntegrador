@@ -2,7 +2,7 @@
 import productoModel from '../Models/mongo.js';
 
 class ProductManagerMongo {
-  async getProducts(max, sort) {
+  async getProducts(limit, sort, descripcion) {
     try {
       let query = productoModel.find();
 
@@ -10,8 +10,12 @@ class ProductManagerMongo {
         query = query.sort(sort);
       }
 
-      if (max) {
-        query = query.limit(max);
+      if (limit) {
+        query = query.limit(limit);
+      }
+
+      if (descripcion) {
+        query = query.find({ descripcion });
       }
 
       const content = await query.exec();

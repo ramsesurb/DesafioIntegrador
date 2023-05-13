@@ -9,10 +9,13 @@ const routerProd = Router();
 routerProd.get("/", async (req, res) => {
   const limit = req.query.limit ? parseInt(req.query.limit) : undefined;
   const sort = req.query.sort || undefined;
-  const prodsRaw = await productos.getProducts(limit, sort);
+  const descripcion = req.query.descripcion || undefined;
+
+  const prodsRaw = await productos.getProducts(limit, sort, descripcion);
   const prods = prodsRaw.map(item => item.toObject());
+
   res.send(prods);
-})
+});
 //get by id
 routerProd.get("/:id", async (req, res) => {
   const id = parseFloat(req.params.id);
