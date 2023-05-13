@@ -24,27 +24,40 @@ routerCart.post("/", async (req, res) => {
 });
 
 //get by id
-routerCart.get("/:id", async (req, res) => {
+routerCart.get("/prod/:id", async (req, res) => {
   const id = parseFloat(req.params.id);
   const prodById = await productos.getByid(id);
   res.send(prodById);
 });
+
+//delete by id
+//routerCart.delete("/:id", async (req, res) => {
+//  const id = parseInt(req.params.id);
+//  const deleteProd = await productos.deleteById(id);
+//  res.send(deleteProd);
+//});
+
 //save new product
 routerCart.post("/:cid/product/:pid", async (req, res) => {
-  const cid = parseFloat(req.params.cid);
-  const pid = parseFloat(req.params.pid);
-  const product = req.body;
-  const cart = await productos.addProduct(cid, product, pid);
-  res.send(cart);
+  try {
+    const cid = req.params.cid;
+    const pid = req.params.pid;
+    const product = req.body;
+    const cart = await productos.addProduct(cid, product, pid);
+    res.send(cart);
+  } catch (error) {
+    // Manejar el error adecuadamente
+    console.error(error);
+    res.status(500).send("Error interno del servidor");
+  }
 });
-
 //nuevo put carrito
 
 routerCart.put("/:cid/product/:pid", async (req, res) => {
   const cid = parseFloat(req.params.cid);
   const pid = parseFloat(req.params.pid);
   const product = req.body;
-  const cart = await productos.addProduct(cid, product, pid);
+ // const cart = await productos.addProduct(cid, product, pid);
   res.send(cart);
 });
 //delete productos del array by id
@@ -69,7 +82,7 @@ routerCart.put("/:cid", async (req, res) => {
   const cart = await productos.updateCart(cid, products);
   res.send(cart);
 });
-
+//actualizar cantidad
 routerCart.put("/:cid/products/:pid", async (req, res) => {
   const cid = parseFloat(req.params.cid);
   const pid = parseFloat(req.params.pid);
@@ -80,23 +93,15 @@ routerCart.put("/:cid/products/:pid", async (req, res) => {
 });
 
 routerCart.get("/:cid", async (req, res) => {
-  const prodlist = await prods.getProducts();
-  const cid = parseFloat(req.params.cid);
-
   try {
-   
-
+    const cid = parseFloat(req.params.cid);
+    const cart = await cartModel.findOne({ _id: cid }).populate("productos.producto");
     res.send(cart);
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ error: "Internal Server Error" });
+    console.error(error);
+    res.status(500).send("Error interno del servidor");
   }
 });
 
-//delete by id
-//routerCart.delete("/:id", async (req, res) => {
-//  const id = parseInt(req.params.id);
-//  const deleteProd = await productos.deleteById(id);
-//  res.send(deleteProd);
-//});
+
 export default routerCart;

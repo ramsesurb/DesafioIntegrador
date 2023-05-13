@@ -1,4 +1,5 @@
 import cartModel from "../Models/cart.js";
+import productoModel from "../Models/mongo.js";
 import { promises as fs } from "fs";
 class CartManagerMongo {
   async getProducts(limit) {
@@ -15,7 +16,15 @@ class CartManagerMongo {
       return [];
     }
   }
+  async addProduct(cid,product,pid){
 
+    const cart = await cartModel.findOne({_id:cid})
+    cart[0].productos.push({producto:pid})
+    const result= await cartModel.updateOne({_id:cid},{$set:cart[0]})
+    console.log(result)
+    return result
+
+  }
   async createCart() {
     try {
       
@@ -31,56 +40,6 @@ class CartManagerMongo {
       console.log(error);
     }
   }
-
-  async addProduct(cid, product, pid) {
-    try {
-      const cart = await this.getProducts();
-      const cartIndex = cart.findIndex(c => c.id === cid);
-      
-      if (cartIndex === -1) {
-        return { error: "El carrito no existe" };
-      }
-      
-      const existingProductIndex = cart[cartIndex].productos.findIndex(
-        p => p.id === pid
-      );
-  
-      if (existingProductIndex !== -1) {
-        cart[cartIndex].productos[existingProductIndex].Quantity++;
-      } else {
-        const newProduct = {
-          id: pid,
-          Quantity: 1,
-        };
-        cart[cartIndex].productos.push(newProduct);
-      }
-  
-      const groupedProducts = cart.reduce((accumulator, current) => {
-        const index = accumulator.findIndex(
-          (product) => product.products.id === current.products.id
-        );
-  
-        if (index === -1) {
-          accumulator.push(current);
-        } else {
-          accumulator[index].Quantity += current.Quantity;
-        }
-  
-        return accumulator;
-      }, []);
-  
-      await fs.writeFile(
-        `./Data/Cart.json`,
-        JSON.stringify(groupedProducts, null, 2)
-      );
-  
-      console.log("producto nuevo", product);
-    } catch (error) {
-      console.log(error);
-      return { error: "Error al agregar el producto al carrito" };
-    }
-  }
-  
 
   async getByid(id) {
     try {
