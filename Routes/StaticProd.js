@@ -6,6 +6,7 @@ const productos = new ProductManagerMongo("../Controllers/ProductManagerMongo.js
 const staticProd = Router();
 
 staticProd.get("/", async (req, res) => {
+<<<<<<< HEAD
   const { page = 1, limit: queryLimit, sort, descripcion } = req.query;
 
   // Obtener los productos paginados de Mongoose
@@ -38,6 +39,20 @@ staticProd.get("/", async (req, res) => {
     prevPage,
     nextPage
   });
+=======
+  const {page = 1} = req.query;
+  const limit = req.query.limit ? parseInt(req.query.limit) : undefined;
+  const prodsRaw = await productos.getProducts(limit);
+  //const prods = prodsRaw.map(item=>item.toObject())
+  
+  const {docs, hasPrevPage, hasNextPage, nextPage, prevPage} = await productoModel.paginate({},{limit:6, page, lean:true})
+  const prods = docs
+  res.render("home", { productos: prods ,
+        hasPrevPage,
+        hasNextPage,
+        prevPage,
+        nextPage});
+>>>>>>> f46dedc685133cfb073031e8829e249d474cc122
 });
 
 
