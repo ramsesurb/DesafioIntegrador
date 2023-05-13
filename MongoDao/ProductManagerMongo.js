@@ -2,20 +2,27 @@
 import productoModel from '../Models/mongo.js';
 
 class ProductManagerMongo {
-  async getProducts(limit) {
+  async getProducts(max, sort) {
     try {
-      const content = await productoModel.find(limit)
-      
-    
-      if (limit) {
-        return content.slice(0, limit);
+      let query = productoModel.find();
+
+      if (sort) {
+        query = query.sort(sort);
       }
+
+      if (max) {
+        query = query.limit(max);
+      }
+
+      const content = await query.exec();
+
       return content;
     } catch (error) {
       console.log(error);
       return [];
     }
   }
+
   async addProduct(prod) {
     try {
       const saveCont = await this.getProducts();

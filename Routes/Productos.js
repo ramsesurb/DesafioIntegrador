@@ -1,16 +1,18 @@
 import { Router } from "express";
 import ProductManagerMongo from "../MongoDao/ProductManagerMongo.js"
 const productos = new ProductManagerMongo("../Controllers/ProductManagerMongo.js");
+import productoModel from "../Models/mongo.js";
 
 const routerProd = Router();
 
 //getAll productos
 routerProd.get("/", async (req, res) => {
   const limit = req.query.limit ? parseInt(req.query.limit) : undefined;
-  const prodsRaw = await productos.getProducts(limit);
-  const prods = prodsRaw.map(item=>item.toObject())
+  const sort = req.query.sort || undefined;
+  const prodsRaw = await productos.getProducts(limit, sort);
+  const prods = prodsRaw.map(item => item.toObject());
   res.send(prods);
-});
+})
 //get by id
 routerProd.get("/:id", async (req, res) => {
   const id = parseFloat(req.params.id);

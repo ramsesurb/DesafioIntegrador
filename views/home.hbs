@@ -5,11 +5,11 @@
 </div>
  <br>
 
- <div class="row container ms-4 mt-4">
+ <div class="row container  mt-4 justify-content-center">
     {{#if productos}}
      {{#each productos}}
 
-<div id="prodDisplay" class="card col-sm-6 mb-3 mb-sm-0 m-4 ms-4" style="width: 18rem;">
+<div id="prodDisplay" class="card col-sm-6 mb-3 mb-sm-0 m-4 ms-4 " style="width: 18rem;">
   <img src="{{ this.thumbnail }}" width="50" class="card-img-top" alt="...">
   <div class="card-body">
     <h5 class="card-title">{{ this.titulo }}</h5>
@@ -26,46 +26,15 @@
     <br>
         <h3> No hay ningún producto agregado. </h3>
         {{/if}}
-         
+     <div class=" row width  m-4 justify-content-center ">  
     {{#if hasPrevPage}}
-    <a href="/?page={{prevPage}}"><button>Anterior</button></a>
+    <a href="/?page={{prevPage}}" class=" col btn btn-primary">Anterior</a>
     {{/if}}
     {{#if hasNextPage}}
-    <a href="/?page={{nextPage}}"><button>Siguiente</button></a>
+    <a href="/?page={{nextPage}}" class=" col btn btn-primary">Siguiente</a>
     {{/if}}
-
+    </div>  
 </div>
         
 
 
-<div class="entry mt-4">
-    {{#if productos}}
-    <div class="  p-1 border border-dark border-3 rounded">
-        <table class="  table table-resposive ">
-            <thead class="thead-dark text-light bg-primary">
-                <tr>
-                    <th scope="col">id</th>
-                    <th scope="col">Nombre</th>
-                    <th scope="col">Precio</th>
-                    <th scope="col">Stock</th>
-                    <th scope="col">Imagen</th>
-                </tr>
-            </thead>
-            <tbody id="prodDisplay">
-                {{#each productos}}
-                <tr class="table">
-                    <th>{{ this.id }}</th>
-                    <td>{{ this.titulo }}</td>
-                    <td>{{ this.precio }}</td>
-                    <td>{{ this.stock }}</td>
-                    <td><img src="{{ this.thumbnail }}" width="50"></td>
-                </tr>
-                {{/each}}
-            </tbody>
-        </table>
-        {{else}}
-        <br>
-        <h3> No hay ningún producto agregado. </h3>
-        {{/if}}
-    </div>
-</div>
