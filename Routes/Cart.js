@@ -11,6 +11,7 @@ routerCart.get("/", async (req, res) => {
   const limit = req.query.limit ? parseInt(req.query.limit) : undefined;
   const prods = await productos.getProducts(limit);
   res.send(prods);
+ 
 });
 
 //create cart
@@ -45,6 +46,7 @@ routerCart.post("/:cid/product/:pid", async (req, res) => {
     const product = req.body;
     const cart = await productos.addProduct(cid, product, pid);
     res.send(cart);
+    
   } catch (error) {
     // Manejar el error adecuadamente
     console.error(error);
@@ -77,15 +79,21 @@ routerCart.delete("/:cid", async (req, res) => {
 
 //actualizar carrito
 routerCart.put("/:cid", async (req, res) => {
-  const cid = parseFloat(req.params.cid);
+  const cid = req.params.cid;
   const products = req.body.productos;
-  const cart = await productos.updateCart(cid, products);
-  res.send(cart);
+
+  try {
+    const cart = await productos.updateCart(cid, products);
+    res.send(cart);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Error al actualizar el carrito");
+  }
 });
 //actualizar cantidad
 routerCart.put("/:cid/products/:pid", async (req, res) => {
   const cid = parseFloat(req.params.cid);
-  const pid = parseFloat(req.params.pid);
+  const pid = req.params.pid;
   const quantity = req.body.quantity;
 
   const cart = await productos.updateProductQuantity(cid, pid, quantity);
