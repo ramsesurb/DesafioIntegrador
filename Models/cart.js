@@ -21,6 +21,8 @@ const cartSchema = new mongoose.Schema({
   default: []
   }
 },{ collection: "Cart" });
+
+schema.plugin(mongoosePaginate)
   
 const cartModel = mongoose.model(Collection, cartSchema);
  
