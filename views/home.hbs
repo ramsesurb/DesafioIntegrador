@@ -5,11 +5,11 @@
 </div>
  <br>
 
- <div class="row container ms-4 mt-4">
+ <div class="row container  mt-4 justify-content-center">
     {{#if productos}}
      {{#each productos}}
 
-<div id="prodDisplay" class="card col-sm-6 mb-3 mb-sm-0 m-4 ms-4" style="width: 18rem;">
+<div id="prodDisplay" class="card col-sm-6 mb-3 mb-sm-0 m-4 ms-4 " style="width: 18rem;">
   <img src="{{ this.thumbnail }}" width="50" class="card-img-top" alt="...">
   <div class="card-body">
     <h5 class="card-title">{{ this.titulo }}</h5>
@@ -26,15 +26,19 @@
     <br>
         <h3> No hay ningún producto agregado. </h3>
         {{/if}}
-     {{#if hasPrevPage}}
-    <a href="/students?page={{prevPage}}"><button>Anterior</button></a>
+
+     <div class=" row width  m-4 justify-content-center ">  
+
+     
+
+    {{#if hasPrevPage}}
+    <a href="/?page={{prevPage}}" class=" col btn btn-primary">Anterior</a>
     {{/if}}
     {{#if hasNextPage}}
-    <a href="/students?page={{nextPage}}"><button>Siguiente</button></a>
-    {{/if}}    
-   <a href="/?page={{prevPage}}" class="btn btn-primary">Anterior</a>
-   <a href="/?page={{nextPage}}" class="btn btn-primary">Siguiente</a>
-   
+    <a href="/?page={{nextPage}}" class=" col btn btn-primary">Siguiente</a>
+    {{/if}}
+     
+</div>
    
    
   

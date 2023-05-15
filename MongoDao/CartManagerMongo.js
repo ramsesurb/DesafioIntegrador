@@ -1,6 +1,7 @@
 import cartModel from "../Models/cart.js";
+import productoModel from "../Models/mongo.js";
 import { promises as fs } from "fs";
-class CartManager {
+class CartManagerMongo {
   async getProducts(limit) {
     try {
       const content = await cartModel.find(limit)
@@ -15,13 +16,50 @@ class CartManager {
       return [];
     }
   }
-
+  async addProduct(cid, newProducts) {
+    try {
+      const cart = await cartModel.findOne({ id: cid });
+      if (!cart) {
+        // Si el carrito no existe, crear uno nuevo con los nuevos productos
+        const newCart = await cartModel.create({
+          id: cid,
+          productos: newProducts
+        });
+        return newCart;
+      }
+  
+      // Si el carrito ya existe, actualizar los productos
+      const updatedProducts = [];
+  
+      // Recorrer los nuevos productos
+      for (const newProduct of newProducts) {
+        let existingProduct = cart.productos.find(
+          (product) => product.producto.toString() === newProduct.producto.toString()
+        );
+  
+        // Si el producto ya existe, sumar las cantidades
+        if (existingProduct) {
+          existingProduct.quantity += newProduct.quantity;
+          updatedProducts.push(existingProduct);
+        } else {
+          // Si el producto no existe, agregarlo al array de productos
+          updatedProducts.push(newProduct);
+        }
+      }
+      // Actualizar los productos en el carrito
+      cart.productos = updatedProducts;
+      const updatedCart = await cart.save();
+      return updatedCart;
+    } catch (error) {
+      console.log(error);
+    }
+  }
   async createCart() {
     try {
       
       const newProduct = {
         id: (Math.floor(Math.random() * 1000) % 1000).toString().padStart(3, '0'),
-        productos: [],
+        productos: [{ "id": 4}],
       };
       const result = await cartModel.create(newProduct)
       console.log("producto nuevo", newProduct);
@@ -31,56 +69,6 @@ class CartManager {
       console.log(error);
     }
   }
-
-  async addProduct(cid, product, pid) {
-    try {
-      const cart = await this.getProducts();
-      const cartIndex = cart.findIndex(c => c.id === cid);
-      
-      if (cartIndex === -1) {
-        return { error: "El carrito no existe" };
-      }
-      
-      const existingProductIndex = cart[cartIndex].productos.findIndex(
-        p => p.id === pid
-      );
-  
-      if (existingProductIndex !== -1) {
-        cart[cartIndex].productos[existingProductIndex].Quantity++;
-      } else {
-        const newProduct = {
-          id: pid,
-          Quantity: 1,
-        };
-        cart[cartIndex].productos.push(newProduct);
-      }
-  
-      const groupedProducts = cart.reduce((accumulator, current) => {
-        const index = accumulator.findIndex(
-          (product) => product.products.id === current.products.id
-        );
-  
-        if (index === -1) {
-          accumulator.push(current);
-        } else {
-          accumulator[index].Quantity += current.Quantity;
-        }
-  
-        return accumulator;
-      }, []);
-  
-      await fs.writeFile(
-        `./Data/Cart.json`,
-        JSON.stringify(groupedProducts, null, 2)
-      );
-  
-      console.log("producto nuevo", product);
-    } catch (error) {
-      console.log(error);
-      return { error: "Error al agregar el producto al carrito" };
-    }
-  }
-  
 
   async getByid(id) {
     try {
@@ -102,7 +90,55 @@ class CartManager {
     }
   }
 
-
+  async deleteProductById(cid, pid) {
+    try {
+      const cart = await cartModel.findOneAndUpdate(
+        { id: cid },
+        { $pull: { productos: { id: pid } } },
+        { new: true }
+      );
+      
+      return cart;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  async emptyCart(cid) {
+    try {
+      const cart = await cartModel.updateOne(
+        { id: cid },
+        { $set: { productos: [] } }
+      );
+      return cart;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  async updateCart(cid, products) {
+    try {
+      const cart = await cartModel.findOneAndUpdate(
+        { id: cid },
+        { productos: products },
+        { new: true }
+      );
+      return cart;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  async updateProductQuantity(cid, pid, quantity) {
+    try {
+      const cart = await cartModel.findOneAndUpdate(
+        { id: cid, "productos.id": pid },
+        { $set: { "productos.$.Quantity": quantity } },
+        { new: true }
+      );
+      return cart;
+    } catch (error) {
+      console.log(error);
+    }
+  }
 }
-
-export default CartManager;
+ 
+export default CartManagerMongo;
+const rute = new CartManagerMongo();
