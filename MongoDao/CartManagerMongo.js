@@ -16,7 +16,7 @@ class CartManagerMongo {
       return [];
     }
   }
-  async addProduct(cid, newProducts) {
+  async  addProduct(cid, newProducts) {
     try {
       const cart = await cartModel.findOne({ id: cid });
       if (!cart) {
@@ -28,30 +28,15 @@ class CartManagerMongo {
         return newCart;
       }
   
-      // Si el carrito ya existe, actualizar los productos
-      const updatedProducts = [];
+      // Si el carrito ya existe, agregar los nuevos productos al array de productos
+      cart.productos.push(...newProducts);
   
-      // Recorrer los nuevos productos
-      for (const newProduct of newProducts) {
-        let existingProduct = cart.productos.find(
-          (product) => product.producto.toString() === newProduct.producto.toString()
-        );
-  
-        // Si el producto ya existe, sumar las cantidades
-        if (existingProduct) {
-          existingProduct.quantity += newProduct.quantity;
-          updatedProducts.push(existingProduct);
-        } else {
-          // Si el producto no existe, agregarlo al array de productos
-          updatedProducts.push(newProduct);
-        }
-      }
-      // Actualizar los productos en el carrito
-      cart.productos = updatedProducts;
+      // Guardar los cambios en el carrito
       const updatedCart = await cart.save();
       return updatedCart;
     } catch (error) {
       console.log(error);
+      throw error; // Lanzar el error para que sea capturado en el bloque catch de la ruta
     }
   }
   async createCart() {
@@ -59,7 +44,7 @@ class CartManagerMongo {
       
       const newProduct = {
         id: (Math.floor(Math.random() * 1000) % 1000).toString().padStart(3, '0'),
-        productos: [{ "id": 4}],
+        productos: [],
       };
       const result = await cartModel.create(newProduct)
       console.log("producto nuevo", newProduct);
@@ -142,3 +127,4 @@ class CartManagerMongo {
  
 export default CartManagerMongo;
 const rute = new CartManagerMongo();
+//rute.createCart()
