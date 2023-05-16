@@ -22,8 +22,9 @@ const cartSchema = new mongoose.Schema({
   }
 },{ collection: "Cart" });
 
-schema.plugin(mongoosePaginate)
-  
+cartSchema.pre('find', function(){
+    this.populate("productos.producto");
+})
 const cartModel = mongoose.model(Collection, cartSchema);
  
 
