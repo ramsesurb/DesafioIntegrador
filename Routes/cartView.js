@@ -50,5 +50,5 @@ cartView.get("/:id", async (req, res) => {
 
   
 });
-cartView.get
+
 export default cartView;
