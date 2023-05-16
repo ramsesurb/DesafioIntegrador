@@ -60,7 +60,7 @@ class CartManagerMongo {
       
       //const getByid =await cartModel.findOne({id:id})
 
-      const getByid = await cartModel.findOne({id:id}).populate("productos.producto")
+      const getByid = await cartModel.findById(id).populate("productos.producto")
       console.log("producto buscado", getByid);
       return getByid;
     } catch (error) {
