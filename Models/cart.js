@@ -15,15 +15,15 @@ const cartSchema = new mongoose.Schema({
               ref:"Products"
           },
           quantity: Number,
-          _id: String
+          id: String
       }
   ],
   default: []
   }
 },{ collection: "Cart" });
 
-cartSchema.pre('find', function(){
-    this.populate("productos.producto");
+cartSchema.pre('findById', function(){
+  this.populate("productos.producto");
 })
 const cartModel = mongoose.model(Collection, cartSchema);
  

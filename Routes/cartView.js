@@ -19,33 +19,20 @@ cartView.get("/", async (req, res) => {
   res.render("carts", { productos: prods });
 });
 cartView.get("/:id", async (req, res) => {
-  //const id = req.params.id;
+  const id = req.params.id;
+
+  const getByid = await cartModel.findById(id).lean()
   //const prodById = await productos.getByid(id);
   //const prodArray = Array.isArray(prodById) ? prodById : [prodById];
   //const prods = prodArray.map(item => item.toObject());
 //
-  //console.log(JSON.stringify(prodArray));
+  console.log(JSON.stringify(getByid, null, "\t"));
   //res.render("singleCart", { productos: prods });
 
-  const cart = await productos.getByid(req.params.id)
+  //const cart = await productos.getByid(req.params.id)
 
-  console.log(cart)
 
-  const productsInCart = cart.productos.map(item=> {
-
-    return {
-        productid:item.producto.id,
-        titulo: item.producto.titulo,
-        descripcion: item.producto.descripcion,
-        code: item.producto.code,
-        precio:item.producto.precio,
-        status:item.producto.status,
-        stock:item.producto.stock,
-        thumbnail: item.producto.thumbnail,
-    }
-  })
-
-  res.render("singleCart",{productos: productsInCart})
+  res.render("singleCart",{productos: getByid.productos})
 
 
   
