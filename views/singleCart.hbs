@@ -1,0 +1,27 @@
+<div class="entry mt-4">
+  {{#if productos}}
+  <div class="p-1 border border-dark border-3 rounded">
+    <div class="table table-resposive">
+      <div id="prodDisplay">
+        {{#each productos}}
+      
+        {{/each}}
+        <h2>Carrito</h2>
+        {{#each productos}}
+        <h3>Numero :{{ this.id }}</h3>
+         <p>{{ this._id }}</p>
+         <h3>Productos</h3>
+         {{#each this.productos}}
+         <p>Item:{{ this._id }} cantidad:{{ this.quantity }}</p>
+             {{/each}}
+           
+
+           {{/each}}
+      </div>
+    </div>
+  </div>
+  {{else}}
+  <br>
+  <h3>No hay ningún producto agregado.</h3>
+  {{/if}}
+</div>

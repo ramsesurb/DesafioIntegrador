@@ -9,6 +9,7 @@ import __dirname from "./utils.js";
 import realTime from "./Routes/realTime.js";
 import "./database.js"
 import realTimeChat from "./Routes/Chat.js";
+import cartView from "./Routes/cartView.js";
 
 //express
 const app = express();
@@ -35,9 +36,10 @@ app.set("view engine", "hbs");
 
 //websocket
 app.use("/realTimeProducts", realTime);
-app.use("/Chat",realTimeChat)
+app.use("/chat",realTimeChat)
 //express estatico
 app.use("/", staticProd);
+app.use("/cart",cartView);
 //rutas api
 app.use("/api/cart", routerCart);
 app.use("/api/productos", routerProd);
