@@ -53,15 +53,7 @@ routerCart.post("/:cid/product/:pid", async (req, res) => {
     res.status(500).send("Error interno del servidor");
   }
 });
-//nuevo put carrito
 
-routerCart.put("/:cid/product/:pid", async (req, res) => {
-  const cid = parseFloat(req.params.cid);
-  const pid = parseFloat(req.params.pid);
-  const product = req.body;
- // const cart = await productos.addProduct(cid, product, pid);
-  res.send(cart);
-});
 //delete productos del array by id
 routerCart.delete("/:cid/productos/:pid", async (req, res) => {
   const cid = parseFloat(req.params.cid);
