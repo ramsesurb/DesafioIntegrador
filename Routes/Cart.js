@@ -1,6 +1,7 @@
 import { Router } from "express";
 import CartManagerMongo from "../MongoDao/CartManagerMongo.js"
 import ProductManagerMongo from "../MongoDao/ProductManagerMongo.js";
+import cartModel from "../Models/cart.js";
 const productos = new CartManagerMongo();
 const prods = new ProductManagerMongo();
 
@@ -24,7 +25,7 @@ routerCart.post("/", async (req, res) => {
   }
 });
 
-//get by id
+//get by id viejo
 routerCart.get("/prod/:id", async (req, res) => {
   const id = parseFloat(req.params.id);
   const prodById = await productos.getByid(id);
@@ -32,19 +33,18 @@ routerCart.get("/prod/:id", async (req, res) => {
 });
 
 //delete by id
-//routerCart.delete("/:id", async (req, res) => {
-//  const id = parseInt(req.params.id);
-//  const deleteProd = await productos.deleteById(id);
-//  res.send(deleteProd);
-//});
+routerCart.delete("/:id", async (req, res) => {
+  const id = req.params.id;
+  const deleteProd = await productos.deleteById(id);
+  res.send(deleteProd);
+});
 
 //save new product
-routerCart.post("/:cid/product/:pid", async (req, res) => {
+routerCart.post("/:cid/product/", async (req, res) => {
   try {
     const cid = req.params.cid;
     const newProducts = req.body;
-    const pid = req.params.pid;
-    const cart = await productos.addProduct(cid, newProducts,pid);
+    const cart = await productos.addProduct(cid, newProducts);
     res.send(cart);
     
   } catch (error) {
@@ -53,7 +53,15 @@ routerCart.post("/:cid/product/:pid", async (req, res) => {
     res.status(500).send("Error interno del servidor");
   }
 });
+//nuevo put carrito
 
+routerCart.put("/:cid/product/:pid", async (req, res) => {
+  const cid = parseFloat(req.params.cid);
+  const pid = parseFloat(req.params.pid);
+  const product = req.body;
+ // const cart = await productos.addProduct(cid, product, pid);
+  res.send(cart);
+});
 //delete productos del array by id
 routerCart.delete("/:cid/productos/:pid", async (req, res) => {
   const cid = parseFloat(req.params.cid);
@@ -84,7 +92,7 @@ routerCart.put("/:cid", async (req, res) => {
 });
 //actualizar cantidad
 routerCart.put("/:cid/products/:pid", async (req, res) => {
-  const cid = parseFloat(req.params.cid);
+  const cid = req.params.cid;
   const pid = req.params.pid;
   const quantity = req.body.quantity;
 
