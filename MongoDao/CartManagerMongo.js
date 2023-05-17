@@ -16,22 +16,21 @@ class CartManagerMongo {
       return [];
     }
   }
-  async  addProduct(cid, newProducts) {
+  async  addProduct(cid, newProducts,pid) {
     try {
       const cart = await cartModel.findOne({ id: cid });
+      const prod= await productoModel.findById(pid)
+      
       if (!cart) {
-        // Si el carrito no existe, crear uno nuevo con los nuevos productos
         const newCart = await cartModel.create({
-          id: cid,
+          //id: cid,
           productos: newProducts
         });
         return newCart;
       }
+      //const result = await cartModel.updateOne({ id: cid },{$push:{productos:newProducts._id,quantity:quantity}})
+      cart.productos.push({producto:pid,quantity:1});
   
-      // Si el carrito ya existe, agregar los nuevos productos al array de productos
-      cart.productos.push(...newProducts);
-  
-      // Guardar los cambios en el carrito
       const updatedCart = await cart.save();
       return updatedCart;
     } catch (error) {

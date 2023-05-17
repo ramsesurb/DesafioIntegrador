@@ -3,17 +3,16 @@
   <div class="p-1 border border-dark border-3 rounded">
     <div class="table table-resposive">
       <div id="prodDisplay">
+     
+        
+        
         {{#each productos}}
-      
-        {{/each}}
-        <h2>Carrito</h2>
-        {{#each productos}}
-        <h3>Numero :{{ this.id }}</h3>
-         <p>{{ this._id }}</p>
-         <h3>Productos</h3>
-         {{#each this.producto}}
-         <p>Item:{{ this._id }} cantidad:{{ this.quantity }}</p>
-             {{/each}}
+     
+         <h3>Producto</h3>
+          <p>Item:{{ this.producto.titulo }} / cantidad:{{ this.quantity }}/ precio:{{ this.producto.precio }}</p>
+         
+         
+             
            
 
            {{/each}}

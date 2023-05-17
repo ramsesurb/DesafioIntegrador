@@ -39,11 +39,12 @@ routerCart.get("/prod/:id", async (req, res) => {
 //});
 
 //save new product
-routerCart.post("/:cid/product/", async (req, res) => {
+routerCart.post("/:cid/product/:pid", async (req, res) => {
   try {
     const cid = req.params.cid;
     const newProducts = req.body;
-    const cart = await productos.addProduct(cid, newProducts);
+    const pid = req.params.pid;
+    const cart = await productos.addProduct(cid, newProducts,pid);
     res.send(cart);
     
   } catch (error) {
