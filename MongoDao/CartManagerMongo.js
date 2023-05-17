@@ -79,8 +79,8 @@ class CartManagerMongo {
   async deleteProductById(cid, pid) {
     try {
       const cart = await cartModel.findOneAndUpdate(
-        { id: cid },
-        { $pull: { productos: { id: pid } } },
+        { _id: cid },
+        { $pull: { productos: { _id: pid } } },
         { new: true }
       );
       
@@ -92,7 +92,7 @@ class CartManagerMongo {
   async emptyCart(cid) {
     try {
       const cart = await cartModel.updateOne(
-        { id: cid },
+        { _id: cid },
         { $set: { productos: [] } }
       );
       return cart;
@@ -103,7 +103,7 @@ class CartManagerMongo {
   async updateCart(cid, products) {
     try {
       const cart = await cartModel.findOneAndUpdate(
-        { id: cid },
+        { _id: cid },
         { productos: products },
         { new: true }
       );
@@ -115,7 +115,7 @@ class CartManagerMongo {
   async updateProductQuantity(cid, pid, quantity) {
     try {
       const cart = await cartModel.findOneAndUpdate(
-        { id: cid, "productos.id": pid },
+        { _id: cid, "productos._id": pid },
         { $set: { "productos.$.Quantity": quantity } },
         { new: true }
       );
