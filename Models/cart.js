@@ -15,7 +15,7 @@ const cartSchema = new mongoose.Schema({
               ref:"Products"
           },
           quantity: Number,
-          id: String
+          
       }
   ],
   default: []

@@ -22,6 +22,7 @@ cartView.get("/:id", async (req, res) => {
   const id = req.params.id;
 
   const getByid = await cartModel.findById(id).lean()
+  
   //const prodById = await productos.getByid(id);
   //const prodArray = Array.isArray(prodById) ? prodById : [prodById];
   //const prods = prodArray.map(item => item.toObject());

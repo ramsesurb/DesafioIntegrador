@@ -1,30 +1,42 @@
 import { Router } from "express";
-import ProductManagerMongo from "../MongoDao/ProductManagerMongo.js"
+import ProductManagerMongo from "../MongoDao/ProductManagerMongo.js";
 import productoModel from "../Models/mongo.js";
-const productos = new ProductManagerMongo();
 
+const productos = new ProductManagerMongo("../Controllers/ProductManagerMongo.js");
 const staticProd = Router();
 
-//vista home productos
 staticProd.get("/", async (req, res) => {
-  const { page = 1 } = req.query;
+  const { page = 1, limit: queryLimit, sort, descripcion } = req.query;
 
-  //const limit = req.query.limit ? parseInt(req.query.limit) : undefined;
-  //const prodsRaw = await productos.getProducts();
-  //const prods = prodsRaw.map(item=>item.toObject())
+  // Obtener los productos paginados de Mongoose
+  const options = { limit: 6, page, lean: true };
 
-  const { docs, hasPrevPage, hasNextPage, nextPage, prevPage } = await productoModel.paginate({}, { limit: 6, page, lean: true })
-  const prods = docs
-  console.log("nextPage:", nextPage, hasNextPage)
-  res.render("home",
-   { productos: prods ,
+  if (queryLimit) {
+    options.limit = parseInt(queryLimit);
+  }
+
+  if (sort) {
+    options.sort = sort;
+  }
+
+ 
+  const query = {};
+  if (descripcion) {
+    query.descripcion = descripcion;
+  }
+
+  const { docs, hasPrevPage, hasNextPage, nextPage, prevPage } = await productoModel.paginate(query, options);
+
+  const prodsRaw = await productos.getProducts(queryLimit, sort);
+  const prods = prodsRaw.map(item => item.toObject());
+
+  res.render("home", {
+    productos: docs,
     hasPrevPage,
     hasNextPage,
     prevPage,
-    nextPage, })
-
-  console.log("prevPage:", prevPage, hasPrevPage);
-  ;
+    nextPage
+  });
 });
 
 
