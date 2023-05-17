@@ -18,18 +18,20 @@ class CartManagerMongo {
   }
   async  addProduct(cid, newProducts,pid) {
     try {
-      const cart = await cartModel.findOne({ id: cid });
+      const cart = await cartModel.findOne({ _id: cid });
       const prod= await productoModel.findById(pid)
+      const id= (Math.floor(Math.random() * 1000) % 1000).toString().padStart(3, '0');
       
       if (!cart) {
         const newCart = await cartModel.create({
-          //id: cid,
+          id: cid,
           productos: newProducts
         });
         return newCart;
       }
+      
       //const result = await cartModel.updateOne({ id: cid },{$push:{productos:newProducts._id,quantity:quantity}})
-      cart.productos.push({producto:pid,quantity:1});
+      cart.productos.push({producto:pid,quantity:1,id:id});
   
       const updatedCart = await cart.save();
       return updatedCart;
@@ -69,7 +71,7 @@ class CartManagerMongo {
 
   async deleteById(id) {
     try {
-      const deleteByid = await cartModel.findOneAndDelete({id:id})
+      const deleteByid = await cartModel.findOneAndDelete({_id:id})
       return deleteByid;
     } catch (error) {
       console.log(error);
@@ -80,7 +82,7 @@ class CartManagerMongo {
     try {
       const cart = await cartModel.findOneAndUpdate(
         { _id: cid },
-        { $pull: { productos: { _id: pid } } },
+        { $pull: { productos: { producto: pid } } },
         { new: true }
       );
       
