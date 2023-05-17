@@ -4,7 +4,7 @@ import { promises as fs } from "fs";
 class CartManagerMongo {
   async getProducts(limit) {
     try {
-      const content = await cartModel.find(limit)
+      const content = await cartModel.find(limit).populate("productos.producto")
       
     
       if (limit) {
@@ -82,7 +82,7 @@ class CartManagerMongo {
     try {
       const cart = await cartModel.findOneAndUpdate(
         { _id: cid },
-        { $pull: { productos: { producto: pid } } },
+        { $pull: { productos: { producto: [{_id:pid}] } } },
         { new: true }
       );
       
@@ -114,19 +114,26 @@ class CartManagerMongo {
       console.log(error);
     }
   }
+
   async updateProductQuantity(cid, pid, quantity) {
+    const productExist = await productoModel.findById(pid);
+    if (!productExist) return null;
     try {
-      const cart = await cartModel.findOneAndUpdate(
-        { _id: cid, "productos._id": pid },
-        { $set: { "productos.$.Quantity": quantity } },
-        { new: true }
-      );
-      return cart;
+      const cart = await cartModel.findById(cid);
+      const product = cart.productos.find((p) => p.producto.equals(pid));
+      if (product) {
+        product.quantity = quantity;
+        await cart.save();
+        return cart;
+      }
+      return null;
     } catch (error) {
-      console.log(error);
+      console.log(error + "error en el update product in cartDB ");
+      return null;
     }
   }
 }
+
  
 export default CartManagerMongo;
 const rute = new CartManagerMongo();

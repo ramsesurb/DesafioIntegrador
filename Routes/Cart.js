@@ -56,15 +56,15 @@ routerCart.post("/:cid/product/:pid", async (req, res) => {
 });
 //nuevo put carrito
 
-routerCart.put("/:cid/product/:pid", async (req, res) => {
-  const cid = req.params.cid;
-  const pid = req.params.pid;
-  const product = req.body;
- // const cart = await productos.addProduct(cid, product, pid);
-  res.send(cart);
-});
+//routerCart.put("/:cid/product/:pid", async (req, res) => {
+//  const cid = req.params.cid;
+//  const pid = req.params.pid;
+//  const product = req.body;
+// // const cart = await productos.addProduct(cid, product, pid);
+//  res.send(cart);
+//});
 //delete productos del array by id
-routerCart.delete("/:cid/productos/:pid", async (req, res) => {
+routerCart.delete("/:cid/product/:pid", async (req, res) => {
   const cid = req.params.cid;
   const pid = req.params.pid;
   
@@ -93,14 +93,35 @@ routerCart.put("/:cid", async (req, res) => {
 });
 //actualizar cantidad
 
-routerCart.put("/:cid/products/:pid", async (req, res) => {
-  const cid = req.params.cid;
-  const pid = req.params.pid;
-  const quantity = req.body.quantity;
+routerCart.put("/:cid/product/:pid", async (req, res) => {
+  const { pid, cid } = req.params;
+  const { quantity } = req.body;
+  console.log(pid, cid, quantity);
+  try {
+    const response = await productos.updateProductQuantity(
+      cid,
+      pid,
+      quantity
+    );
+    if (response === null)
+      return res.status(404).send({ error: "Producto no encontrado" });
+    res.status(200).json(response);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: error.message, errorType: "Error en el servidor" });
+  }})
 
-  const cart = await productos.updateProductQuantity(cid, pid, quantity);
-  res.send(cart);
-});
+//routerCart.put("/:cid/product/:pid", async (req, res) => {
+//  const cid = req.params.cid;
+//  const pid = req.params.pid;
+//  const quantity = req.body.quantity;
+//
+//  const cart = await productos.updateProductQuantity(cid, pid, quantity);
+//  res.send(cart);
+//});
+
+//nuevo get id
 
 routerCart.get("/:cid", async (req, res) => {
   try {
