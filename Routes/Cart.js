@@ -32,19 +32,20 @@ routerCart.get("/prod/:id", async (req, res) => {
   res.send(prodById);
 });
 
-//delete by id
-routerCart.delete("/:id", async (req, res) => {
-  const id = req.params.id;
-  const deleteProd = await productos.deleteById(id);
-  res.send(deleteProd);
-});
+////delete by id
+//routerCart.delete("/:id", async (req, res) => {
+//  const id = req.params.id;
+//  const deleteProd = await productos.deleteById(id);
+//  res.send(deleteProd);
+//});
 
 //save new product
-routerCart.post("/:cid/product/", async (req, res) => {
+routerCart.post("/:cid/product/:pid", async (req, res) => {
   try {
     const cid = req.params.cid;
+    const pid = req.params.pid;
     const newProducts = req.body;
-    const cart = await productos.addProduct(cid, newProducts);
+    const cart = await productos.addProduct(cid, newProducts,pid);
     res.send(cart);
     
   } catch (error) {
@@ -56,23 +57,23 @@ routerCart.post("/:cid/product/", async (req, res) => {
 //nuevo put carrito
 
 routerCart.put("/:cid/product/:pid", async (req, res) => {
-  const cid = parseFloat(req.params.cid);
-  const pid = parseFloat(req.params.pid);
+  const cid = req.params.cid;
+  const pid = req.params.pid;
   const product = req.body;
  // const cart = await productos.addProduct(cid, product, pid);
   res.send(cart);
 });
 //delete productos del array by id
 routerCart.delete("/:cid/productos/:pid", async (req, res) => {
-  const cid = parseFloat(req.params.cid);
-  const pid = parseFloat(req.params.pid);
+  const cid = req.params.cid;
+  const pid = req.params.pid;
   
   const cart = await productos.deleteProductById(cid, pid);
   res.send(cart);
 });
 //vaciar carito
 routerCart.delete("/:cid", async (req, res) => {
-  const cid = parseFloat(req.params.cid);
+  const cid = req.params.cid;
   const cart = await productos.emptyCart(cid);
   res.send(cart);
 });
@@ -91,6 +92,7 @@ routerCart.put("/:cid", async (req, res) => {
   }
 });
 //actualizar cantidad
+
 routerCart.put("/:cid/products/:pid", async (req, res) => {
   const cid = req.params.cid;
   const pid = req.params.pid;
