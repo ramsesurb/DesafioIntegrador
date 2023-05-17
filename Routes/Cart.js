@@ -94,7 +94,7 @@ routerCart.put("/:cid/products/:pid", async (req, res) => {
 
 routerCart.get("/:cid", async (req, res) => {
   try {
-    const cid = parseFloat(req.params.cid);
+    const cid = req.params.cid;
     const cart = await cartModel.findOne({ _id: cid }).populate("productos.producto");
     res.send(cart);
   } catch (error) {
